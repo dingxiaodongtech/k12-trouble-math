@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>K-12数学学习困难综合诊断量表 · 思维导图</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  display:flex; flex-direction:column; align-items:center; gap:24px; padding:24px;
+}
+.card {
+  width:900px;
+  border-radius:24px;
+  padding:48px 56px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,0.08);
+  display:flex; flex-direction:column;
+}
+.card-number {
+  position:absolute; top:28px; right:36px;
+  font-size:17px; font-weight:600; opacity:0.5; letter-spacing:1px;
+}
+.tag {
+  display:inline-block; padding:5px 14px; border-radius:20px;
+  font-size:17px; font-weight:600; margin-bottom:16px; width:fit-content; color:white;
+}
+.title { font-size:44px; font-weight:800; line-height:1.2; margin-bottom:12px; letter-spacing:-1px; }
+.subtitle { font-size:22px; font-weight:500; line-height:1.5; margin-bottom:32px; opacity:0.85; }
+
+/* 思维导图专用样式 */
+.mindmap-container { display:flex; gap:40px; }
+.mindmap-left { flex:1.2; }
+.mindmap-right { flex:1; display:flex; flex-direction:column; gap:16px; }
+
+.center-node {
+  background:rgba(255,255,255,0.7);
+  border-radius:16px;
+  padding:18px 24px;
+  text-align:center;
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:28px;
+  border:3px solid;
+}
+
+.domain-branch {
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:16px;
+  position:relative;
+}
+.domain-branch::before {
+  content:'';
+  position:absolute;
+  left:18px; top:36px; bottom:-16px;
+  width:2px;
+  opacity:0.25;
+}
+.domain-branch:last-child::before { display:none; }
+
+.domain-icon {
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:800; color:white; flex-shrink:0;
+  margin-top:2px;
+}
+.domain-content {
+  background:rgba(255,255,255,0.6);
+  border-radius:12px;
+  padding:12px 16px;
+  flex:1;
+}
+.domain-name { font-size:18px; font-weight:700; margin-bottom:4px; }
+.domain-meta { font-size:15px; opacity:0.8; }
+
+.score-card {
+  background:rgba(255,255,255,0.55);
+  border-radius:14px;
+  padding:16px 20px;
+}
+.score-card h4 { font-size:17px; font-weight:700; margin-bottom:8px; }
+.score-row { display:flex; justify-content:space-between; font-size:15px; margin-bottom:4px; }
+.score-bar {
+  height:8px; border-radius:4px; margin-top:6px;
+  background:linear-gradient(90deg, #81C784 0%, #FFF176 35%, #FFB74D 65%, #E57373 85%, #B71C1C 100%);
+  position:relative;
+}
+.score-marker {
+  position:absolute; top:-4px; width:3px; height:16px; background:#333; border-radius:2px;
+}
+
+.level-table { width:100%; border-collapse:collapse; font-size:15px; }
+.level-table td, .level-table th {
+  padding:10px 12px; text-align:left;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+}
+.level-table th { font-weight:700; opacity:0.7; }
+
+.grid-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid-item {
+  background:rgba(255,255,255,0.55); border-radius:14px; padding:16px;
+}
+.grid-item h4 { font-size:17px; font-weight:700; margin-bottom:6px; }
+.grid-item p { font-size:15px; line-height:1.6; opacity:0.9; }
+
+.alert-box {
+  border-radius:14px; padding:16px 20px;
+  border-left:5px solid;
+  background:rgba(255,255,255,0.45);
+  margin-bottom:14px;
+}
+.alert-box strong { font-size:16px; }
+.alert-box p { font-size:15px; line-height:1.6; margin-top:6px; opacity:0.9; }
+
+.detail-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px;
+}
+.detail-card {
+  background:rgba(255,255,255,0.55); border-radius:16px; padding:20px;
+}
+.detail-card h4 { font-size:18px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.detail-card ul { padding-left:18px; }
+.detail-card li { font-size:15px; line-height:1.7; margin-bottom:4px; opacity:0.9; }
+
+.footer { margin-top:auto; font-size:16px; opacity:0.55; text-align:center; padding-top:16px; }
+
+/* 配色主题 */
+.card-1 { background:linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); color:#1A237E; }
+.card-1 .tag { background:#5C6BC0; }
+.card-1 .title { color:#0D47A1; }
+
+.card-2 { background:linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); color:#5D4037; }
+.card-2 .tag { background:#FFA000; }
+.card-2 .title { color:#3E2723; }
+
+.card-3 { background:linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%); color:#4A148C; }
+.card-3 .tag { background:#AB47BC; }
+.card-3 .title { color:#311B92; }
+
+.card-4 { background:linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); color:#1B5E20; }
+.card-4 .tag { background:#66BB6A; }
+.card-4 .title { color:#1B5E20; }
+
+.version-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:8px; }
+.version-card { background:rgba(255,255,255,0.6); border-radius:16px; padding:20px; text-align:center; }
+.version-card .vc-icon { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:800; color:white; margin:0 auto 12px; }
+.version-card h3 { font-size:20px; font-weight:700; margin-bottom:4px; }
+.version-card .vc-meta { font-size:14px; opacity:0.8; margin-bottom:10px; line-height:1.6; }
+.version-card .vc-domains { font-size:13px; line-height:1.8; opacity:0.85; text-align:left; }
+.version-card .vc-alert { font-size:12px; line-height:1.6; margin-top:10px; padding:8px 12px; border-radius:8px; background:rgba(0,0,0,0.05); text-align:left; }
+.version-card .vc-thresholds { font-size:13px; line-height:1.8; margin-top:10px; text-align:left; opacity:0.85; }
+
+.flow-diagram { background:rgba(255,255,255,0.55); border-radius:16px; padding:24px; text-align:center; margin-top:16px; }
+.flow-row { display:flex; align-items:center; justify-content:center; gap:20px; font-size:16px; font-weight:600; margin-bottom:8px; flex-wrap:wrap; }
+.flow-arrow { font-size:24px; opacity:0.5; }
+</style>
+</head>
+<body>
+
+<!-- 卡片1：总览思维导图 -->
+<div class="card card-1">
+  <div class="card-number">01 / 03</div>
+  <div class="tag">诊断量表 · V1.3 分龄版</div>
+  <div class="title">K-12数学学习困难<br>综合诊断量表</div>
+  <div class="subtitle">V1.3 分龄三版 · 0-3分计分<br>K-2版(156分) / 3-6版(216分) / 7-12版(183分)</div>
+
+  <div class="mindmap-container">
+    <div class="mindmap-left">
+      <div class="center-node" style="border-color:#5C6BC0;">
+        数学学习困难综合诊断量表<br>
+        <span style="font-size:16px;opacity:0.8;">三版本 · 分龄适配 · 统一框架</span>
+      </div>
+
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#EF5350;">1</div>
+        <div class="domain-content">
+          <div class="domain-name">A1 数感与计数</div>
+          <div class="domain-meta">8项 · 满分24 · 阈值≥12</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#EC407A;">2</div>
+        <div class="domain-content">
+          <div class="domain-name">A2 基本事实与记忆</div>
+          <div class="domain-meta">8项 · 满分24 · 阈值≥12</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#AB47BC;">3</div>
+        <div class="domain-content">
+          <div class="domain-name">A3 数位理解</div>
+          <div class="domain-meta">6项 · 满分18 · 阈值≥9</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#7E57C2;">4</div>
+        <div class="domain-content">
+          <div class="domain-name">A4 运算程序与步骤</div>
+          <div class="domain-meta">7项 · 满分21 · 阈值≥11</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#5C6BC0;">5</div>
+        <div class="domain-content">
+          <div class="domain-name">A5 分数与小数</div>
+          <div class="domain-meta">7项 · 满分21 · 阈值≥11</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#42A5F5;">6</div>
+        <div class="domain-content">
+          <div class="domain-name">A6 文字题与数学语言</div>
+          <div class="domain-meta">7项 · 满分21 · 阈值≥11</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#29B6F6;">7</div>
+        <div class="domain-content">
+          <div class="domain-name">A7 视觉空间与方向</div>
+          <div class="domain-meta">8项 · 满分24 · 阈值≥12</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#26C6DA;">8</div>
+        <div class="domain-content">
+          <div class="domain-name">A8 信息加工错误</div>
+          <div class="domain-meta">7项 · 满分21 · 阈值≥11</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#26A69A;">9</div>
+        <div class="domain-content">
+          <div class="domain-name">A9 情感与行为</div>
+          <div class="domain-meta">8项 · 满分24 · 阈值≥12</div>
+        </div>
+      </div>
+      <div class="domain-branch">
+        <div class="domain-icon" style="background:#66BB6A;">10</div>
+        <div class="domain-content">
+          <div class="domain-name">A10 认知风格与元认知</div>
+          <div class="domain-meta">6项 · 满分18 · 阈值≥9</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-right">
+      <div class="score-card">
+        <h4>📊 综合分级标准</h4>
+        <table class="level-table">
+          <tr><th>总分</th><th>等级</th><th>建议行动</th></tr>
+          <tr><td>0-36</td><td>正常</td><td>课堂差异化</td></tr>
+          <tr><td>37-72</td><td>轻度</td><td>小组干预+辅助</td></tr>
+          <tr><td>73-108</td><td>中度(MLD)</td><td>结构化补救</td></tr>
+          <tr><td>109-144</td><td>重度(SpLD)</td><td>一对一干预</td></tr>
+          <tr><td>145-216</td><td>极重度</td><td>转介专业评估</td></tr>
+        </table>
+      </div>
+
+      <div class="alert-box" style="border-color:#E53935;">
+        <strong>🔴 特别注意 1</strong>
+        <p>A8(信息加工) ≥ 14分 + A1(数感) ≥ 16分 → 优先考虑计算障碍可能性</p>
+      </div>
+      <div class="alert-box" style="border-color:#FB8C00;">
+        <strong>🟠 特别注意 2</strong>
+        <p>A9(情感) ≥ 18分 → 无论其他域如何，必须先处理焦虑再处理数学</p>
+      </div>
+      <div class="alert-box" style="border-color:#8E24AA;">
+        <strong>🟣 特别注意 3</strong>
+        <p>A9 ≥ 18分 + A8 ≥ 14分 → 高度提示需转介心理健康+神经心理双评估</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">数据来源：Steve Chinn《The Trouble with Maths》+ Dyscalculia.org</div>
+</div>
+
+<!-- 卡片2：A1-A5 详细观察项 -->
+<div class="card card-2">
+  <div class="card-number">02 / 03</div>
+  <div class="tag">详细观察项 · 上</div>
+  <div class="title">认知基础域<br>A1 - A5</div>
+  <div class="subtitle">数感、记忆、数位、运算、分数小数</div>
+
+  <div class="detail-grid">
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#EF5350;color:white;text-align:center;line-height:28px;font-size:14px;">1</span> A1 数感与计数</h4>
+      <ul>
+        <li>无法一眼认出3-5个物体（subitizing缺失）</li>
+        <li>简单加法仍需数手指，二年级后未自动化</li>
+        <li>无法灵活拆解数字（看不到9=10−1）</li>
+        <li>超过4个视觉项目即混乱/拒绝</li>
+        <li>不能感知数量的近似大小</li>
+        <li>数数时跳跃、漏数或忘记数到哪</li>
+        <li>不能从任意起点开始数，倒计数困难</li>
+        <li>分不清基数和序数</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分24 · 阈值≥12 → 数感域显著困难</div>
+    </div>
+
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#EC407A;color:white;text-align:center;line-height:28px;font-size:14px;">2</span> A2 基本事实与记忆</h4>
+      <ul>
+        <li>乘法表/加法表"今天背明天忘"</li>
+        <li>简单加法事实需思考超过3秒，答案不稳定</li>
+        <li>背口诀只能从头顺序背，无法随机提取</li>
+        <li>能背出事实但在计算中使用错误</li>
+        <li>同一列数字加两次得到两个不同答案</li>
+        <li>能跟随规律完成任务，但很快遗忘</li>
+        <li>对符号含义关联模糊（÷有时反应为减）</li>
+        <li>依赖"无意识计算"——排除法而非真计算</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分24 · 阈值≥12 → 事实记忆域显著困难</div>
+    </div>
+
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#AB47BC;color:white;text-align:center;line-height:28px;font-size:14px;">3</span> A3 数位理解</h4>
+      <ul>
+        <li>竖式数位经常不对齐，不理解"45"是40+5</li>
+        <li>中间含0的减法持续出错</li>
+        <li>整数→小数的数位理解断裂（末位对齐）</li>
+        <li>teen-number词汇误导：听到nineteen写91</li>
+        <li>混淆 hundreds（百位）和 hundredths（百分位）</li>
+        <li>不能解释"为什么竖式加减要从个位开始"</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分18 · 阈值≥9 → 数位域显著困难</div>
+    </div>
+
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#7E57C2;color:white;text-align:center;line-height:28px;font-size:14px;">4</span> A4 运算程序与步骤</h4>
+      <ul>
+        <li>长除法/多位数乘法步骤混乱、遗漏或颠倒</li>
+        <li>进退位经常遗忘或搞错方向</li>
+        <li>运算方向混乱：加法从右往左、除法从左往右</li>
+        <li>操作符无意识混淆（看见−却做了+）</li>
+        <li>脑中想1,000但写出100,000</li>
+        <li>多步中"丢失操作轨迹"——忘了前面做了什么</li>
+        <li>面对多步运算时自言自语出声（补偿工作记忆）</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分21 · 阈值≥11 → 运算程序域显著困难</div>
+    </div>
+
+    <div class="detail-card" style="grid-column:1 / -1;">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#5C6BC0;color:white;text-align:center;line-height:28px;font-size:14px;">5</span> A5 分数与小数</h4>
+      <ul>
+        <li>用整数逻辑理解分数——认为 1/3 > 1/2</li>
+        <li>分数加减分子+分子、分母+分母</li>
+        <li>无法在数轴上大致定位分数</li>
+        <li>分数/小数/百分比三种表示形式完全割裂</li>
+        <li>除法与分数割裂——不知道 ÷ 和分数线是同一件事</li>
+        <li>十进制→其他进制转换困难（时间60进制、角度非100）</li>
+        <li>钱币面值辨别困难——触觉和视觉对应关系不稳固</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分21 · 阈值≥11 → 分数小数域显著困难</div>
+    </div>
+  </div>
+
+  <div class="footer">数据来源：Steve Chinn《The Trouble with Maths》+ Dyscalculia.org</div>
+</div>
+
+<!-- 卡片3：A6-A10 详细观察项 -->
+<div class="card card-3">
+  <div class="card-number">03 / 03</div>
+  <div class="tag">详细观察项 · 下</div>
+  <div class="title">语言、空间、加工<br>情感与认知风格</div>
+  <div class="subtitle">A6 - A10</div>
+
+  <div class="detail-grid">
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#42A5F5;color:white;text-align:center;line-height:28px;font-size:14px;">6</span> A6 文字题与数学语言</h4>
+      <ul>
+        <li>读题后不知道要算什么</li>
+        <li>"比8多5"→8−5=3（"比"字语义干扰）</li>
+        <li>多条件题目只能处理1个，遗漏关键信息</li>
+        <li>数学词汇双重含义造成持续误解</li>
+        <li>题目留空不答比率显著高于纯计算题</li>
+        <li>只能解题不能出题（缺乏反向翻译）</li>
+        <li>对数学指令词理解不稳定（simplify/evaluate）</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分21 · 阈值≥11</div>
+    </div>
+
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#29B6F6;color:white;text-align:center;line-height:28px;font-size:14px;">7</span> A7 视觉空间与方向</h4>
+      <ul>
+        <li>抄题时数字顺序写反（36→63）</li>
+        <li>在密集练习册页面上"迷失"</li>
+        <li>2D→3D心像转换困难（展开图→立体）</li>
+        <li>坐标轴x/y经常写反</li>
+        <li>量角器、直尺使用困难</li>
+        <li>室内/户外方向导航混乱</li>
+        <li>无法画出大致比例图示</li>
+        <li>多样化教具反而引发"大脑静态干扰"</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分24 · 阈值≥12</div>
+    </div>
+
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#26C6DA;color:white;text-align:center;line-height:28px;font-size:14px;">8</span> A8 信息加工错误</h4>
+      <ul>
+        <li><strong>输入切换</strong>：数字/符号在脑中自动替换（3→8）</li>
+        <li><strong>信息遗漏</strong>：多步题中遗漏关键数字</li>
+        <li><strong>序列混淆</strong>：步骤顺序无意识打乱</li>
+        <li><strong>模式模糊</strong>：看不出两题属于同一类型</li>
+        <li><strong>大脑空白</strong>：面对熟悉题型突然完全不会</li>
+        <li><strong>错误驱动</strong>：基于脑中替换后的错误数字继续算</li>
+        <li><strong>手指反馈受损</strong>：触觉数量感知缺失</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分21 · 阈值≥11 → 指向计算障碍神经基础</div>
+    </div>
+
+    <div class="detail-card">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#26A69A;color:white;text-align:center;line-height:28px;font-size:14px;">9</span> A9 情感与行为</h4>
+      <ul>
+        <li>一听到数学就烦躁/抗拒/哭泣</li>
+        <li>作业/试卷大面积留白（不尝试率>20%）</li>
+        <li>反复擦改、铅笔重压——不愿留下错误痕迹</li>
+        <li>努力与结果严重不匹配</li>
+        <li>日常练习能完成，但测试失败（差距>30%）</li>
+        <li>挫折后出现"思维冻结"、痛苦、恐慌</li>
+        <li>时间压力一出现立刻崩溃</li>
+        <li>自认为是"数学白痴"（消极归因内化）</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分24 · 阈值≥12 → 情感域显著困难</div>
+    </div>
+
+    <div class="detail-card" style="grid-column:1 / -1;">
+      <h4><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#66BB6A;color:white;text-align:center;line-height:28px;font-size:14px;">10</span> A10 认知风格与元认知</h4>
+      <ul>
+        <li>极端Inchworm：所有题都用竖式/标准算法，缺乏灵活性</li>
+        <li>极端Grasshopper：答案正确但从不记录过程</li>
+        <li>永远不会检查答案或评估答案合理性</li>
+        <li>遇到非标题目第一秒就放弃</li>
+        <li>不能回答"你是怎么算出来的？"（元认知缺失）</li>
+        <li>从不用估算——无法回答"答案是30还是300？"</li>
+      </ul>
+      <div style="margin-top:10px;font-size:14px;font-weight:700;color:#C62828;">满分18 · 阈值≥9 → 认知风格域显著</div>
+    </div>
+  </div>
+
+  <div class="alert-box" style="border-color:#7B1FA2; margin-top:10px;">
+    <strong>💡 使用提示</strong>
+    <p>每个条目按 0=从未 / 1=偶尔(<25%) / 2=经常(25-75%) / 3=几乎总是(>75%) 计分。NA=不适用。交叉验证比单域得分更重要——例如 A8高+A1高 指向计算障碍，A9高 优先处理焦虑。</p>
+  </div>
+
+  <div class="footer">数据来源：Steve Chinn《The Trouble with Maths》+ Dyscalculia.org</div>
+</div>
+
+<!-- 卡片4：三版本对比 -->
+<div class="card card-4">
+  <div class="card-number">04 / 04</div>
+  <div class="tag">版本选型 · V1.3</div>
+  <div class="title">分龄三版本<br>对比一览</div>
+  <div class="subtitle">选版规则：按学生当前年级选择对应版本。跨段学生用实际年级版本 + 补充低段断裂信号。</div>
+
+  <div class="version-grid">
+    <div class="version-card">
+      <div class="vc-icon" style="background:#EF5350;">K</div>
+      <h3>K-2 低年级版</h3>
+      <div class="vc-meta">5-7岁 · 8域×52项 · 满分156</div>
+      <div class="vc-domains">
+        <strong>诊断域：</strong><br>
+        ① 数感与计数(8项)<br>
+        ② 早期符号与书写(6项)<br>
+        ③ 早期数位萌芽(5项)<br>
+        ④ 早期运算行为(7项)<br>
+        ⑤ 视觉空间与方向(7项)<br>
+        ⑥ 信息加工错误(5项)<br>
+        ⑦ 早期情感信号(8项)<br>
+        ⑧ 课堂参与行为(6项)
+      </div>
+      <div class="vc-alert">
+        <strong>⚠ 特别预警：</strong><br>
+        A低6+A低1双高→计算障碍<br>
+        E8≥2→归因已开始内化<br>
+        A低3≥67%→枢纽①断裂
+      </div>
+      <div class="vc-thresholds">
+        <strong>分级：</strong>正常≤25 | 轻度26-52 | 中度53-78 | 重度79-104 | 极重度≥105
+      </div>
+    </div>
+
+    <div class="version-card">
+      <div class="vc-icon" style="background:#FFA000;">中</div>
+      <h3>3-6 中年级版</h3>
+      <div class="vc-meta">8-11岁 · 10域×72项 · 满分216</div>
+      <div class="vc-domains">
+        <strong>诊断域：</strong><br>
+        ① 数感与计数(8项)<br>
+        ② 基本事实与记忆(8项)<br>
+        ③ 数位理解(6项)<br>
+        ④ 运算程序与步骤(7项)<br>
+        ⑤ 分数与小数(7项)<br>
+        ⑥ 文字题与语言(7项)<br>
+        ⑦ 视觉空间与方向(8项)<br>
+        ⑧ 信息加工错误(7项)<br>
+        ⑨ 情感与行为(8项)<br>
+        ⑩ 认知风格与元认知(6项)
+      </div>
+      <div class="vc-alert">
+        <strong>⚠ 特别预警：</strong><br>
+        A中8+A中1双高→计算障碍<br>
+        A中9≥75%→先处理焦虑<br>
+        A中5+A中3双高→枢纽③④断裂
+      </div>
+      <div class="vc-thresholds">
+        <strong>分级：</strong>正常≤36 | 轻度37-72 | 中度73-108 | 重度109-144 | 极重度≥145
+      </div>
+    </div>
+
+    <div class="version-card">
+      <div class="vc-icon" style="background:#AB47BC;">高</div>
+      <h3>7-12 高年级版</h3>
+      <div class="vc-meta">12-18岁 · 9域×61项 · 满分183</div>
+      <div class="vc-domains">
+        <strong>诊断域：</strong><br>
+        ① 代数数感与抽象(7项)<br>
+        ② 运算自动化残留(6项)<br>
+        ③ 数位与测量进阶(5项)<br>
+        ④ 多步推理与执行(7项)<br>
+        ⑤ 文字题与数学阅读(7项)<br>
+        ⑥ 视觉空间与几何(7项)<br>
+        ⑦ 信息加工错误(6项)<br>
+        ⑧ 情感归因与认同(8项)<br>
+        ⑨ 自我倡权与策略(8项)
+      </div>
+      <div class="vc-alert">
+        <strong>⚠ 特别预警：</strong><br>
+        A高9+A高8双高→先心理教育<br>
+        A高2+A高7双高→考虑替代路径<br>
+        E8低+A高7高→特定型计算障碍
+      </div>
+      <div class="vc-thresholds">
+        <strong>分级：</strong>正常≤30 | 轻度31-61 | 中度62-92 | 重度93-122 | 极重度≥123
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px;">📋 分龄使用流程</div>
+    <div class="flow-row">
+      <span style="background:#EF5350;color:white;padding:4px 12px;border-radius:20px;">K-2年级</span>
+      <span class="flow-arrow">→</span>
+      <span>附录A-低</span>
+      <span class="flow-arrow">→</span>
+      <span>8域52项</span>
+    </div>
+    <div class="flow-row">
+      <span style="background:#FFA000;color:white;padding:4px 12px;border-radius:20px;">3-6年级</span>
+      <span class="flow-arrow">→</span>
+      <span>附录A-中</span>
+      <span class="flow-arrow">→</span>
+      <span>10域72项</span>
+    </div>
+    <div class="flow-row">
+      <span style="background:#AB47BC;color:white;padding:4px 12px;border-radius:20px;">7-12年级</span>
+      <span class="flow-arrow">→</span>
+      <span>附录A-高</span>
+      <span class="flow-arrow">→</span>
+      <span>9域61项</span>
+    </div>
+    <div style="font-size:13px;opacity:0.7;margin-top:10px;">
+      跨段学生（数学年龄≠实际年级）→ 用实际年级版本 + 补充低段断裂信号
+    </div>
+  </div>
+
+  <div class="footer">数据来源：Steve Chinn《The Trouble with Maths》+ Dyscalculia.org · V1.3 分龄量表版</div>
+</div>
+
+<button id="xhs-export-btn" style="position:fixed;bottom:32px;right:32px;z-index:9999;padding:14px 28px;border:none;border-radius:50px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);font-family:sans-serif;letter-spacing:0.5px;">📷 导出全部图片</button>
+<div id="xhs-export-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center;flex-direction:column;color:#fff;font-family:sans-serif;">
+  <div style="font-size:24px;font-weight:600;margin-bottom:16px;">正在导出图片...</div>
+  <div id="xhs-export-progress" style="font-size:18px;opacity:0.9;">准备中</div>
+  <div style="margin-top:24px;width:200px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;">
+    <div id="xhs-export-bar" style="width:0%;height:100%;background:#4CAF50;transition:width 0.3s;"></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3/dist/dom-to-image-more.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js"></script>
+<script>
+(function(){
+  var btn = document.getElementById('xhs-export-btn');
+  var overlay = document.getElementById('xhs-export-overlay');
+  var progressText = document.getElementById('xhs-export-progress');
+  var progressBar = document.getElementById('xhs-export-bar');
+
+  if (typeof domtoimage === 'undefined' || typeof JSZip === 'undefined') {
+    btn.textContent = '请联网后刷新以使用导出';
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'not-allowed';
+    btn.disabled = true;
+    return;
+  }
+
+  btn.addEventListener('click', async function(){
+    var cards = document.querySelectorAll('.card');
+    if (!confirm('将逐张下载 ' + cards.length + ' 张图片，每张间隔1秒。浏览器可能会提示“允许多次下载”，请点允许。确定开始？')) return;
+    btn.style.display = 'none';
+    overlay.style.display = 'flex';
+
+    try {
+      for (var i = 0; i < cards.length; i++) {
+        progressText.textContent = '第 ' + (i+1) + ' / ' + cards.length + ' 张';
+        progressBar.style.width = Math.round(((i+1) / cards.length) * 100) + '%';
+        cards[i].scrollIntoView({ behavior: 'instant', block: 'center' });
+        await new Promise(function(r){ setTimeout(r, 500); });
+
+        var dataUrl = await domtoimage.toPng(cards[i]);
+        var a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'card_' + String(i+1).padStart(2, '0') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        await new Promise(function(r){ setTimeout(r, 800); });
+      }
+
+      overlay.style.display = 'none';
+      btn.style.display = 'block';
+      alert('全部下载完成！共 ' + cards.length + ' 张。');
+    } catch (err) {
+      console.error(err);
+      alert('导出失败: ' + err.message);
+    } finally {
+      overlay.style.display = 'none';
+      btn.style.display = 'block';
+      progressBar.style.width = '0%';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

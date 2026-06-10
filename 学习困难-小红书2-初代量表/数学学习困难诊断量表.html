@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>K-12 数学学习困难分龄诊断量表</title>
+<style>
+:root{--pri:#5C6BC0;--priL:#7986CB;--suc:#66BB6A;--war:#FFA726;--dan:#EF5350;--bg:#FAFAFA;--card:#fff;--txt:#333;--lt:#999;--bd:#E0E0E0;--sh:0 2px 8px rgba(0,0,0,.08);--r:12px}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
+.page{display:none;max-width:640px;margin:0 auto;padding:16px;min-height:100vh;animation:fadeIn .35s}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Welcome */
+.welcome{text-align:center;padding-top:40px}
+.welcome .icon{font-size:56px;margin-bottom:12px}
+.welcome h1{font-size:26px;font-weight:800;color:var(--pri);line-height:1.3}
+.welcome .sub{font-size:14px;color:var(--lt);margin:8px 0 24px}
+.w-card{background:var(--card);border-radius:var(--r);padding:24px 20px;box-shadow:var(--sh);text-align:left;margin:0 auto;max-width:400px}
+.w-card .fg{margin-bottom:16px}
+.w-card label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--txt)}
+.w-card input[type=text]{width:100%;padding:12px 14px;border:2px solid var(--bd);border-radius:10px;font-size:16px;outline:none;transition:border .2s}
+.w-card input[type=text]:focus{border-color:var(--pri)}
+.grade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.grade-btn{padding:12px 8px;border:2px solid var(--bd);border-radius:10px;background:var(--card);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:all .2s;color:var(--lt)}
+.grade-btn.sel{border-color:var(--pri);background:rgba(92,107,192,.08);color:var(--pri)}
+.grade-btn small{display:block;font-size:11px;font-weight:400;opacity:.7;margin-top:2px}
+.role-row{display:flex;gap:8px}
+.role-btn{flex:1;padding:10px;border:2px solid var(--bd);border-radius:10px;background:var(--card);font-size:14px;cursor:pointer;text-align:center;transition:all .2s}
+.role-btn.sel{border-color:var(--suc);background:rgba(102,187,106,.08);color:var(--suc)}
+.start-btn{width:100%;padding:14px;background:var(--pri);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:16px;transition:all .2s}
+.start-btn:disabled{opacity:.4;cursor:not-allowed}
+.start-btn:not(:disabled):active{transform:scale(.97)}
+.banner{background:#FFF8E1;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.banner .resume-btn{background:var(--pri);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:13px;cursor:pointer}
+
+/* Header */
+.q-header{position:sticky;top:0;z-index:100;background:var(--bg);padding:10px 0 6px}
+.q-header .meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--lt);margin-bottom:6px}
+.q-header .title{font-size:15px;font-weight:700;color:var(--pri)}
+.dots{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.dots .dot{width:8px;height:8px;border-radius:50%;background:var(--bd);transition:all .3s}
+.dots .dot.done{background:var(--pri)}
+.dots .dot.current{background:var(--pri);transform:scale(1.6);box-shadow:0 0 6px rgba(92,107,192,.4)}
+
+/* Question card */
+.q-card{background:var(--card);border-radius:var(--r);padding:20px 16px;box-shadow:var(--sh);margin-bottom:12px}
+.q-card .domain-tag{display:inline-block;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;margin-bottom:10px;letter-spacing:.5px}
+.q-item{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-item .q-txt{font-size:14px;font-weight:500;margin-bottom:8px;line-height:1.5}
+.q-item .q-code{display:inline-block;background:var(--bg);padding:1px 6px;border-radius:4px;font-size:11px;color:var(--lt);margin-right:4px}
+.opts{display:flex;gap:6px}
+.opt{flex:1;text-align:center;padding:14px 6px;border:2px solid var(--bd);border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--lt);min-width:0}
+.opt:active{transform:scale(.95)}
+.opt.s0{border-color:#C8E6C9;background:rgba(200,230,201,.15);color:#2E7D32}
+.opt.s1{border-color:#FFF9C4;background:rgba(255,249,196,.2);color:#F57F17}
+.opt.s2{border-color:#FFE0B2;background:rgba(255,224,178,.2);color:#E65100}
+.opt.s3{border-color:#FFCDD2;background:rgba(255,205,210,.2);color:#C62828}
+.opt.sel{font-weight:700;transform:scale(1.02)}
+
+.nav-btns{display:flex;justify-content:space-between;gap:10px;margin-top:16px;padding-bottom:24px}
+.nav-btns button{padding:14px 28px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-prev{background:var(--card);color:var(--lt);border:2px solid var(--bd)!important}
+.btn-next{background:var(--pri);color:#fff}
+.btn-submit{background:var(--dan);color:#fff}
+.nav-btns button:active{transform:scale(.97)}
+
+/* Report */
+.rpt-header{background:linear-gradient(135deg,var(--pri),#283593);color:#fff;border-radius:16px;padding:24px;text-align:center;margin-bottom:16px}
+.rpt-header .level-badge{display:inline-block;padding:8px 20px;border-radius:16px;font-size:16px;font-weight:800;margin:10px 0}
+.rpt-header .big-score{font-size:56px;font-weight:900;line-height:1}
+.rpt-row{display:flex;gap:10px;margin:8px 0;justify-content:center;flex-wrap:wrap;font-size:13px;opacity:.9}
+.rpt-section{background:var(--card);border-radius:var(--r);padding:20px 16px;box-shadow:var(--sh);margin-bottom:12px}
+.rpt-section h3{font-size:16px;font-weight:700;margin-bottom:12px;color:var(--pri);padding-bottom:8px;border-bottom:2px solid var(--bd)}
+.domain-bar{margin-bottom:10px}
+.domain-bar .db-header{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.domain-bar .db-name{font-weight:600}
+.domain-bar .db-score{color:var(--lt)}
+.domain-bar .db-track{height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.domain-bar .db-fill{height:100%;border-radius:3px;transition:width .5s}
+.db-fill.low{background:var(--suc)}
+.db-fill.mid{background:var(--war)}
+.db-fill.high{background:var(--dan)}
+
+.alert{font-size:13px;padding:10px 14px;border-radius:10px;margin-bottom:8px;line-height:1.6}
+.alert-r{background:#FFEBEE;border-left:3px solid var(--dan)}
+.alert-o{background:#FFF8E1;border-left:3px solid var(--war)}
+.alert-b{background:#E3F2FD;border-left:3px solid var(--pri)}
+.alert-g{background:#E8F5E9;border-left:3px solid var(--suc)}
+.rec-item{font-size:13px;padding:10px 14px;border-radius:10px;margin-bottom:8px;line-height:1.6}
+.rec-r{background:#FFEBEE}
+.rec-o{background:#FFF8E1}
+.rec-g{background:#E8F5E9}
+.rec-b{background:#E3F2FD}
+.act-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;font-size:14px}
+.act-row input{margin-top:2px;flex-shrink:0}
+.strength-weak{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sw-col{padding:14px;border-radius:12px}
+.sw-good{background:#E8F5E9}
+.sw-bad{background:#FFF3F0}
+.sw-col h4{font-size:13px;margin-bottom:6px}
+.sw-col .item{font-size:12px;padding:2px 0;color:var(--txt)}
+.msg-box{background:#E3F2FD;border-radius:10px;padding:14px;font-size:13px;line-height:1.7;margin-top:8px}
+.msg-box blockquote{background:#fff;border-left:3px solid var(--pri);margin-top:8px;padding:10px 14px;border-radius:0 8px 8px 0;font-style:italic}
+.footer-actions{display:flex;gap:10px;justify-content:center;padding:20px 0}
+.footer-actions button{padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-out{background:var(--card);color:var(--pri);border:2px solid var(--pri)!important}
+/* Toast */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* radar placeholder */
+.radar-box{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:12px;text-align:center}
+.radar-box canvas{max-width:100%}
+
+@media(max-width:400px){
+  .grade-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== WELCOME ====== -->
+<div id="toast" class="toast"></div>
+<div class="page active" id="page-welcome">
+<div class="welcome">
+  <div class="icon">📐</div>
+  <h1>数学学习困难<br>分龄诊断量表</h1>
+  <div class="sub">6个年级段 · 逐域独立阈值 · 不同年级不同起点</div>
+
+  <div class="w-card">
+    <div id="resumeBanner" class="banner" style="display:none">
+      <span>📂 检测到未完成的测评</span>
+      <button class="resume-btn" onclick="resumeAssessment()">继续</button>
+    </div>
+    <div class="fg">
+      <label>学生姓名</label>
+      <input type="text" id="studentName" placeholder="请输入（选填）" oninput="checkReady()">
+    </div>
+    <div class="fg">
+      <label>当前年级</label>
+      <div class="grade-grid" id="gradeBtns"></div>
+    </div>
+    <div class="fg">
+      <label>填写人身份</label>
+      <div class="role-row" id="roleBtns"></div>
+    </div>
+    <button class="start-btn" id="startBtn" disabled onclick="start()">开始测评</button>
+  </div>
+</div>
+</div>
+
+<!-- ====== QUESTIONS ====== -->
+<div class="page" id="page-questions">
+  <div class="q-header">
+    <div class="meta"><span class="title" id="qTitle"></span><span id="qProgress"></span></div>
+    <div class="dots" id="qDots"></div>
+  </div>
+  <div id="qContent"></div>
+  <div class="nav-btns">
+    <button class="btn-prev" id="btnPrev" onclick="prevPage()" style="display:none">← 上一页</button>
+    <button class="btn-next" id="btnNext" onclick="nextPage()">下一页 →</button>
+  </div>
+</div>
+
+<!-- ====== REPORT ====== -->
+<div class="page" id="page-report">
+  <div class="rpt-header">
+    <div style="font-size:13px;opacity:.8">数学学习困难诊断报告</div>
+    <div style="font-size:15px;margin-top:4px" id="rptStudent"></div>
+    <div class="big-score" id="rptScore">0</div>
+    <div class="rpt-row" id="rptMeta"></div>
+    <div class="level-badge" id="rptBadge"></div>
+    <div style="font-size:13px;opacity:.85;margin-top:6px" id="rptSummary"></div>
+  </div>
+
+  <div class="strength-weak" id="rptSW"></div>
+
+  <div class="radar-box"><canvas id="radarCanvas" width="300" height="300"></canvas></div>
+
+  <div class="rpt-section">
+    <h3>各领域分析</h3>
+    <div id="rptDomains"></div>
+  </div>
+
+  <div class="rpt-section" id="rptAlertsSection">
+    <h3>⚠️ 预警</h3>
+    <div id="rptAlerts"></div>
+  </div>
+
+  <div class="rpt-section">
+    <h3>📋 行动清单</h3>
+    <div id="rptActions"></div>
+  </div>
+
+  <div class="rpt-section">
+    <h3>💬 教师-家长沟通</h3>
+    <div id="rptMsg"></div>
+  </div>
+
+  <div class="footer-actions">
+    <button class="btn-pri" onclick="window.print()">打印报告</button>
+    <button class="btn-out" onclick="restart()">重新测评</button>
+  </div>
+</div>
+
+<script>
+// ==================== GRADE BANDS (6 versions) ====================
+const GRADES = [
+  {id:'K',  label:'幼儿园大班', age:'5-6岁', icon:'🎨' },
+  {id:'G1', label:'一年级',     age:'6-7岁', icon:'🔤' },
+  {id:'G2', label:'二年级',     age:'7-8岁', icon:'📏' },
+  {id:'G34',label:'三~四年级',  age:'8-10岁',icon:'📐' },
+  {id:'G56',label:'五~六年级',  age:'10-12岁',icon:'📊'},
+  {id:'G79',label:'初中',       age:'12-15岁',icon:'🧮'},
+];
+
+const ROLES = ['家长','教师','学生自己'];
+
+// ==================== DOMAIN TEMPLATES ====================
+// Each domain template has items. Grade-specific activation and thresholds defined in gradeConfig.
+
+const DOMAIN_TEMPLATES = {
+
+  numberSense: { id:'D1', name:'数感与计数', color:'#EF5350', icon:'🔢',
+    items: [
+      {code:'S1',text:'无法一眼认出3-5个物体的数量（subitizing缺失），必须逐个数'},
+      {code:'S2',text:'数数时跳跃、漏数，或数到一半忘记数到哪了'},
+      {code:'S3',text:'不能从任意起点开始数，倒计数特别困难'},
+      {code:'S4',text:'对超过4个的视觉项目产生混乱——点阵>4即无法处理'},
+      {code:'S5',text:'无法判断两堆物品哪个更多'},
+      {code:'S6',text:'分不清基数和序数——"第3个"和"3个"搞混'},
+      {code:'S7',text:'不能按大小顺序排列物品'},
+      {code:'S8',text:'手指反馈异常——数手指时指尖与物体对应不稳固'}
+    ]},
+
+  symbol: { id:'D2', name:'符号与书写', color:'#EC407A', icon:'✏️',
+    items: [
+      {code:'F1',text:'数字书写镜像反转（3写反、6和9混淆）——超过同龄正常范围'},
+      {code:'F2',text:'听到数字说出后，写出来的数字与听到的不符'},
+      {code:'F3',text:'无法将具体数量与数字符号稳定对应'},
+      {code:'F4',text:'+ − = 符号混淆——看到+有时当−用'},
+      {code:'F5',text:'抄写数字时出现持续的方向错误'},
+      {code:'F6',text:'数字书写超出格子，大小不一，空间组织混乱'}
+    ]},
+
+  placeValue: { id:'D3', name:'数位理解', color:'#AB47BC', icon:'🏗️',
+    items: [
+      {code:'P1',text:'不理解"12"是10+2——认为是"1和2放在一起"'},
+      {code:'P2',text:'10以内正确，一旦跨越10（如8+5）就崩溃'},
+      {code:'P3',text:'不会用凑十法——不理解8+5=8+2+3=13'},
+      {code:'P4',text:'计数时到整十跨越处卡住或跳过'},
+      {code:'P5',text:'无法用实物演示"10个一换成1个十"'},
+      {code:'P6',text:'竖式数位经常不对齐'},
+      {code:'P7',text:'中间含0的减法持续出错（如305-128=187）'},
+      {code:'P8',text:'除以10/100/1000时移位方向混乱'}
+    ]},
+
+  arithmetic: { id:'D4', name:'运算程序', color:'#7E57C2', icon:'➕',
+    items: [
+      {code:'O1',text:'做加法时从头数而非从较大数起数'},
+      {code:'O2',text:'只会一种策略——所有加法都数手指'},
+      {code:'O3',text:'今天能做对明天全忘——数学记忆极不稳定'},
+      {code:'O4',text:'操作符无意识混淆——做加法题中间突然做了减法'},
+      {code:'O5',text:'同一组物品数两次得到两个不同结果'},
+      {code:'O6',text:'无法反向思考——知道3+5=8但8-3=?需要重算'},
+      {code:'O7',text:'进退位经常遗忘或搞错方向'},
+      {code:'O8',text:'多步运算（长除法等）步骤混乱或遗漏'},
+      {code:'O9',text:'运算方向混乱——乘法从右往左但除法从左往右'},
+      {code:'O10',text:'知道该写什么数字但手写出来是另一个'},
+      {code:'O11',text:'多步运算中自言自语出声——用外部语音补偿工作记忆'},
+    ]},
+
+  fraction: { id:'D5', name:'分数与小数', color:'#29B6F6', icon:'🍕',
+    items: [
+      {code:'D1',text:'用整数逻辑理解分数——认为1/3 > 1/2（因为3>2）'},
+      {code:'D2',text:'分数加减分子+分子、分母+分母——整数规则错误泛化'},
+      {code:'D3',text:'无法在数轴上大致定位分数'},
+      {code:'D4',text:'分数/小数/百分比三种形式完全割裂'},
+      {code:'D5',text:'除法与分数割裂——不知道÷和分数线是同一件事'},
+      {code:'D6',text:'十进制→非十进制转换困难（时间60进制、角度360°）'},
+      {code:'D7',text:'分数大小直觉缺失'}
+    ]},
+
+  wordProblem: { id:'D6', name:'文字题与数学语言', color:'#26C6DA', icon:'📖',
+    items: [
+      {code:'L1',text:'读题后不知道要算什么——信息无法转化为数学操作'},
+      {code:'L2',text:'选错运算符号——"比8多5"→8-5=3'},
+      {code:'L3',text:'多条件题目只能处理1个条件'},
+      {code:'L4',text:'数学词汇双重含义持续误解'},
+      {code:'L5',text:'题目留空率显著高于纯计算题'},
+      {code:'L6',text:'不能自己造数学题（反向翻译缺失）'},
+      {code:'L7',text:'指令词理解不稳定（simplify/evaluate/expand）'}
+    ]},
+
+  visual: { id:'D7', name:'视觉空间与方向', color:'#66BB6A', icon:'👁️',
+    items: [
+      {code:'V1',text:'左右混淆——"从左边数"和"从右边数"持续混乱'},
+      {code:'V2',text:'在纸上找不到下一题的起始位置'},
+      {code:'V3',text:'图形匹配/拼图类任务明显弱于同龄人'},
+      {code:'V4',text:'对可视化教具反而更困惑——教具越多越乱'},
+      {code:'V5',text:'方向导航混乱——找教室/跟方向指令困难'},
+      {code:'V6',text:'模仿动作序列困难（拍手节奏、手指操）'},
+      {code:'V7',text:'无法画出基本形状或画出后完全不成比例'},
+      {code:'V8',text:'抄题时数字顺序写反——36→63'},
+    ]},
+
+  processing: { id:'D8', name:'信息加工错误', color:'#FFA726', icon:'⚡',
+    items: [
+      {code:'G1',text:'输入切换：读题时数字/符号在脑中自动替换——学生完全无意识'},
+      {code:'G2',text:'信息遗漏：多步题中遗漏关键数字或步骤'},
+      {code:'G3',text:'序列混淆：步骤顺序混乱但坚信自己做对了'},
+      {code:'G4',text:'模式模糊：换个数字就认为是"完全不同类型的题"'},
+      {code:'G5',text:'大脑空白：面对熟悉题型突然完全不会'},
+      {code:'G6',text:'错误驱动：基于脑中替换后的错误数字继续运算，全题崩溃'},
+      {code:'G7',text:'手指反馈受损：触觉数量感知缺失——数手指不能补偿'}
+    ]},
+
+  emotion: { id:'D9', name:'情感与行为', color:'#EF5350', icon:'💭',
+    items: [
+      {code:'E1',text:'数学活动时间一到就烦躁/抗拒/哭泣'},
+      {code:'E2',text:'作业/试卷大面积留白——不尝试率>20%'},
+      {code:'E3',text:'反复擦改、铅笔重压——不愿留下错误痕迹'},
+      {code:'E4',text:'大量努力但产出令人失望——努力-结果严重不匹配'},
+      {code:'E5',text:'日常练习能做对但测试/考试失败——差距>30%'},
+      {code:'E6',text:'挫折后迅速出现思维冻结/痛苦/恐慌'},
+      {code:'E7',text:'时间压力一出现立刻崩溃'},
+      {code:'E8',text:'自我描述为"数学白痴"——归因已内化为身份认同'}
+    ]},
+
+  cognitive: { id:'D10', name:'认知风格与元认知', color:'#42A5F5', icon:'🧠',
+    items: [
+      {code:'C1',text:'极端Inchworm：所有题都用标准算法——即使心算更快'},
+      {code:'C2',text:'极端Grasshopper：答案正确但从不记录过程'},
+      {code:'C3',text:'从不检查答案——做完=完事'},
+      {code:'C4',text:'遇到非标题目第一秒放弃'},
+      {code:'C5',text:'不能回答"你是怎么算出来的？"'},
+      {code:'C6',text:'从不用估算——无法回答"答案大概是30还是300？"'}
+    ]},
+
+  algebra: { id:'D11', name:'代数思维与抽象推理', color:'#5C6BC0', icon:'📈',
+    items: [
+      {code:'A1',text:'无法从具体数字过渡到变量——看到x就不知所措'},
+      {code:'A2',text:'比例/比率/百分比的关系理解停留在公式记忆——换个情境崩溃'},
+      {code:'A3',text:'函数图像的含义不理解——能读点但看不懂趋势/斜率'},
+      {code:'A4',text:'无法将文字描述转化为代数表达式'},
+      {code:'A5',text:'科学记数法/指数/根号停留在机械操作'},
+      {code:'A6',text:'多步代数运算步骤混乱或中途遗忘目标'},
+      {code:'A7',text:'几何证明的逻辑链断裂——知道定理但串不起来'}
+    ]},
+
+  selfAdvocacy: { id:'D12', name:'自我倡权与策略', color:'#009688', icon:'🛡️',
+    items: [
+      {code:'B1',text:'不知道自己需要什么帮助——问"你需要什么支持？"答"不知道"'},
+      {code:'B2',text:'不会主动使用辅助工具——计算器/公式卡放在旁边也不拿'},
+      {code:'B3',text:'不敢向老师提出便利需求——怕别人觉得在作弊/偷懒'},
+      {code:'B4',text:'不会管理时间——考试中卡住后无法策略性跳过'},
+      {code:'B5',text:'不了解自己的困难属于哪一类——"反正就是数学不行"'},
+      {code:'B6',text:'不会使用技术工具补偿——学习意愿低'},
+      {code:'B7',text:'从没想过"也许不是我的错"——未接触过学习困难的科学解释'},
+      {code:'B8',text:'回避所有涉及数学的职业方向/专业——不是因为没兴趣'}
+    ]}
+};
+
+// ==================== GRADE CONFIG ====================
+// Each grade defines which domains are active + item subset + threshold
+const gradeConfig = {
+  K: { label:'幼儿园大班', age:'5-6岁',
+    domains: [
+      {tpl:'numberSense', threshold:8,  items:[0,1,2,3,5,6,7]},      // skip S4
+      {tpl:'symbol',      threshold:6,  items:[0,1,2,4,5]},           // K-appropriate items
+      {tpl:'visual',      threshold:7,  items:[0,1,2,4,5]},
+      {tpl:'processing',  threshold:5,  items:[0,1,4]},               // simplified for K
+      {tpl:'emotion',     threshold:8,  items:[0,1,3]},               // simplified for K
+    ],
+    maxScore: 68, levels:[
+      {max:11,label:'正常',cls:'#C8E6C9',color:'#2E7D32'},
+      {max:22,label:'轻度·观察',cls:'#FFF9C4',color:'#F57F17'},
+      {max:34,label:'中度·干预',cls:'#FFE0B2',color:'#E65100'},
+      {max:51,label:'重度·评估',cls:'#FFCDD2',color:'#C62828'},
+      {max:68,label:'极重度',cls:'#B71C1C',color:'#fff'},
+  ]},
+
+  G1: { label:'一年级', age:'6-7岁',
+    domains: [
+      {tpl:'numberSense', threshold:9,  items:[0,1,2,3,4,5,6,7]},    // add S4
+      {tpl:'symbol',      threshold:6,  items:[0,1,2,3,4,5]},
+      {tpl:'placeValue',  threshold:6,  items:[0,1,2,3,4]},           // first 5 items only
+      {tpl:'arithmetic',  threshold:7,  items:[0,1,2,4,5,6]},         // basic items
+      {tpl:'visual',      threshold:8,  items:[0,1,2,4,5,7]},
+      {tpl:'processing',  threshold:5,  items:[0,1,4,6]},
+      {tpl:'emotion',     threshold:9,  items:[0,1,2,3]},
+    ],
+    maxScore: 93, levels:[
+      {max:15,label:'正常',cls:'#C8E6C9',color:'#2E7D32'},
+      {max:31,label:'轻度·观察',cls:'#FFF9C4',color:'#F57F17'},
+      {max:46,label:'中度·干预',cls:'#FFE0B2',color:'#E65100'},
+      {max:69,label:'重度·评估',cls:'#FFCDD2',color:'#C62828'},
+      {max:93,label:'极重度',cls:'#B71C1C',color:'#fff'},
+  ]},
+
+  G2: { label:'二年级', age:'7-8岁',
+    domains: [
+      {tpl:'numberSense', threshold:10, items:null},  // null = all items
+      {tpl:'symbol',      threshold:6,  items:[0,1,3,4,5]},
+      {tpl:'placeValue',  threshold:8,  items:[0,1,2,3,4,5,6]},      // add P6
+      {tpl:'arithmetic',  threshold:9,  items:[0,1,2,4,5,6,7,8,9]},
+      {tpl:'visual',      threshold:9,  items:null},
+      {tpl:'processing',  threshold:7,  items:[0,1,2,4,6]},
+      {tpl:'emotion',     threshold:10, items:[0,1,2,3,4]},
+      {tpl:'cognitive',   threshold:5,  items:[0,2,4,5]},             // basic cog items
+    ],
+    maxScore: 108, levels:[
+      {max:18,label:'正常',cls:'#C8E6C9',color:'#2E7D32'},
+      {max:36,label:'轻度·观察',cls:'#FFF9C4',color:'#F57F17'},
+      {max:54,label:'中度·干预',cls:'#FFE0B2',color:'#E65100'},
+      {max:81,label:'重度·评估',cls:'#FFCDD2',color:'#C62828'},
+      {max:108,label:'极重度',cls:'#B71C1C',color:'#fff'},
+  ]},
+
+  G34: { label:'三~四年级', age:'8-10岁',
+    domains: [
+      {tpl:'numberSense', threshold:12, items:null},
+      {tpl:'placeValue',  threshold:9,  items:null},
+      {tpl:'arithmetic',  threshold:12, items:[2,3,4,6,7,8,9,10]},   // harder subset
+      {tpl:'fraction',    threshold:8,  items:[0,1,2,4,5]},           // intro fractions
+      {tpl:'wordProblem', threshold:8,  items:[0,1,2,3,4]},
+      {tpl:'visual',      threshold:10, items:null},
+      {tpl:'processing',  threshold:8,  items:null},
+      {tpl:'emotion',     threshold:12, items:null},
+      {tpl:'cognitive',   threshold:6,  items:null},
+    ],
+    maxScore: 156, levels:[
+      {max:26,label:'正常',cls:'#C8E6C9',color:'#2E7D32'},
+      {max:52,label:'轻度',cls:'#FFF9C4',color:'#F57F17'},
+      {max:78,label:'中度',cls:'#FFE0B2',color:'#E65100'},
+      {max:117,label:'重度',cls:'#FFCDD2',color:'#C62828'},
+      {max:156,label:'极重度',cls:'#B71C1C',color:'#fff'},
+  ]},
+
+  G56: { label:'五~六年级', age:'10-12岁',
+    domains: [
+      {tpl:'numberSense', threshold:12, items:null},
+      {tpl:'placeValue',  threshold:9,  items:null},
+      {tpl:'arithmetic',  threshold:13, items:null},
+      {tpl:'fraction',    threshold:11, items:null},
+      {tpl:'wordProblem', threshold:10, items:null},
+      {tpl:'visual',      threshold:10, items:null},
+      {tpl:'processing',  threshold:9,  items:null},
+      {tpl:'emotion',     threshold:12, items:null},
+      {tpl:'cognitive',   threshold:7,  items:null},
+    ],
+    maxScore: 189, levels:[
+      {max:31,label:'正常',cls:'#C8E6C9',color:'#2E7D32'},
+      {max:63,label:'轻度',cls:'#FFF9C4',color:'#F57F17'},
+      {max:94,label:'中度',cls:'#FFE0B2',color:'#E65100'},
+      {max:141,label:'重度',cls:'#FFCDD2',color:'#C62828'},
+      {max:189,label:'极重度',cls:'#B71C1C',color:'#fff'},
+  ]},
+
+  G79: { label:'初中', age:'12-15岁',
+    domains: [
+      {tpl:'algebra',     threshold:11, items:null},
+      {tpl:'arithmetic',  threshold:9,  items:[2,4,6,7,8,9,10]},    // residual basic
+      {tpl:'placeValue',  threshold:6,  items:[5,6,7]},               // advanced only
+      {tpl:'wordProblem', threshold:11, items:null},
+      {tpl:'visual',      threshold:10, items:null},
+      {tpl:'processing',  threshold:9,  items:null},
+      {tpl:'emotion',     threshold:12, items:null},
+      {tpl:'cognitive',   threshold:7,  items:null},
+      {tpl:'selfAdvocacy',threshold:10, items:null},
+    ],
+    maxScore: 180, levels:[
+      {max:30,label:'正常',cls:'#C8E6C9',color:'#2E7D32'},
+      {max:60,label:'轻度',cls:'#FFF9C4',color:'#F57F17'},
+      {max:90,label:'中度',cls:'#FFE0B2',color:'#E65100'},
+      {max:135,label:'重度',cls:'#FFCDD2',color:'#C62828'},
+      {max:180,label:'极重度',cls:'#B71C1C',color:'#fff'},
+  ]}
+};
+
+// ==================== STATE ====================
+const STORE = 'mathdx_grade';
+let state = {
+  grade: '', role: '', name: '',
+  currentPage: 0, // page index within flattened items
+  answers: {},    // {domainId_code: 0|1|2|3}
+};
+let flatPages = []; // [{domainId,domainName,color,items:[{code,text}]},...]
+
+function getConfig() { return gradeConfig[state.grade]; }
+
+// ==================== INIT ====================
+(function init(){
+  // Grade buttons
+  document.getElementById('gradeBtns').innerHTML = GRADES.map(g =>
+    `<button class="grade-btn" onclick="pickGrade('${g.id}',this)">${g.icon} ${g.label}<small>${g.age}</small></button>`
+  ).join('');
+  // Role buttons
+  document.getElementById('roleBtns').innerHTML = ROLES.map(r =>
+    `<button class="role-btn" onclick="pickRole('${r}',this)">${r}</button>`
+  ).join('');
+  // Check resume
+  const saved = localStorage.getItem(STORE);
+  if (saved) {
+    try {
+      const d = JSON.parse(saved);
+      if (d.grade && Object.keys(d.answers||{}).length > 0 && d.currentPage > 0) {
+        document.getElementById('resumeBanner').style.display = 'flex';
+      }
+    } catch(e){}
+  }
+})();
+
+function pickGrade(gid, el) {
+  state.grade = gid;
+  document.querySelectorAll('.grade-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  checkReady();
+}
+function pickRole(r, el) {
+  state.role = r;
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  checkReady();
+}
+function checkReady() {
+  state.name = document.getElementById('studentName').value.trim();
+  document.getElementById('startBtn').disabled = !(state.grade && state.role);
+}
+
+function resumeAssessment() {
+  const saved = JSON.parse(localStorage.getItem(STORE));
+  if (!saved) return;
+  state = saved;
+  buildPages();
+  document.getElementById('page-welcome').classList.remove('active');
+  document.getElementById('page-questions').classList.add('active');
+  renderPage();
+}
+
+function buildPages() {
+  const cfg = getConfig();
+  flatPages = [];
+  cfg.domains.forEach((dc, di) => {
+    const tpl = DOMAIN_TEMPLATES[dc.tpl];
+    const items = dc.items ? dc.items.map(i => tpl.items[i]) : tpl.items;
+    flatPages.push({
+      domainId: tpl.id, domainName: tpl.name, color: tpl.color,
+      threshold: dc.threshold, max: items.length * 3,
+      items: items.map(it => ({code:it.code, text:it.text}))
+    });
+  });
+}
+
+// ==================== START ====================
+function start() {
+  state.answers = {};
+  state.currentPage = 0;
+  buildPages();
+  document.getElementById('page-welcome').classList.remove('active');
+  document.getElementById('page-questions').classList.add('active');
+  renderPage();
+}
+
+function renderPage() {
+  const page = flatPages[state.currentPage];
+  const total = flatPages.length;
+  const cfg = getConfig();
+
+  document.getElementById('qTitle').textContent = `${GRADES.find(g=>g.id===state.grade).label} · ${page.domainName}`;
+  document.getElementById('qProgress').textContent = `${state.currentPage+1}/${total}`;
+
+  // Dots
+  let dots = '';
+  for (let i=0;i<total;i++) {
+    let cls = 'dot';
+    if (i < state.currentPage) cls += ' done';
+    if (i === state.currentPage) cls += ' current';
+    dots += `<div class="${cls}"></div>`;
+  }
+  document.getElementById('qDots').innerHTML = dots;
+
+  // Questions
+  let html = `<div class="q-card">
+    <span class="domain-tag" style="background:${page.color}22;color:${page.color}">${page.domainId} · ${page.domainName}</span>
+    <div style="font-size:12px;color:var(--lt);margin-bottom:12px">满分${page.max} · 阈值≥${page.threshold} · ${page.items.length}题</div>`;
+  page.items.forEach(it => {
+    const key = page.domainId+'_'+it.code;
+    const v = state.answers[key] ?? -1;
+    html += `<div class="q-item">
+      <div class="q-txt"><span class="q-code">${it.code}</span> ${it.text}</div>
+      <div class="opts">`;
+    [0,1,2,3].forEach(s => {
+      html += `<div class="opt s${s}${v===s?' sel':''}" onclick="setAns('${key}',${s},this)">${s}<br><small>${['从未','偶尔','经常','总是'][s]}</small></div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += '</div>';
+  document.getElementById('qContent').innerHTML = html;
+
+  // Nav
+  document.getElementById('btnPrev').style.display = state.currentPage === 0 ? 'none' : 'inline-block';
+  const last = state.currentPage === total - 1;
+  const btn = document.getElementById('btnNext');
+  btn.textContent = last ? '查看报告 →' : '下一页 →';
+  btn.className = last ? 'btn-submit' : 'btn-next';
+
+  // Save
+  localStorage.setItem(STORE, JSON.stringify(state));
+  window.scrollTo(0,0);
+}
+
+function setAns(key, val, el) {
+  state.answers[key] = val;
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  localStorage.setItem(STORE, JSON.stringify(state));
+}
+
+function prevPage() {
+  if (state.currentPage > 0) { state.currentPage--; renderPage(); }
+}
+
+function nextPage() {
+  const page = flatPages[state.currentPage];
+  const unanswered = page.items.filter(it => state.answers[page.domainId+'_'+it.code] === undefined);
+  if (unanswered.length > 0) {
+    // Show toast + highlight unanswered, but don't block
+    unanswered.forEach(it => {
+      state.answers[page.domainId+'_'+it.code] = 0;
+    });
+    showToast(`⚠️ ${unanswered.length} 题未答，已记为"从未"。可返回修改。`);
+    localStorage.setItem(STORE, JSON.stringify(state));
+  }
+  if (state.currentPage < flatPages.length - 1) {
+    state.currentPage++;
+    renderPage();
+  } else {
+    showReport();
+  }
+}
+
+// ==================== REPORT ====================
+function showReport() {
+  document.getElementById('page-questions').classList.remove('active');
+  document.getElementById('page-report').classList.add('active');
+  const cfg = getConfig();
+  const g = GRADES.find(g=>g.id===state.grade);
+
+  // Calculate
+  let totalScore = 0, maxPossible = 0;
+  const domainScores = {}, domainPcts = {}, domainMaxes = {};
+  flatPages.forEach(p => {
+    let ds = 0;
+    p.items.forEach(it => { ds += (state.answers[p.domainId+'_'+it.code]||0); });
+    domainScores[p.domainId] = ds;
+    domainMaxes[p.domainId] = p.max;
+    domainPcts[p.domainId] = p.max>0 ? Math.round(ds/p.max*100) : 0;
+    totalScore += ds;
+    maxPossible += p.max;
+  });
+
+  // Level
+  let level = cfg.levels[0];
+  for (const l of cfg.levels) { if (totalScore <= l.max) { level = l; break; } }
+
+  const overThresh = flatPages.filter(p => (domainScores[p.domainId]||0) >= (p.threshold||999));
+  const nearThresh = flatPages.filter(p => {
+    const ds = domainScores[p.domainId]||0;
+    return ds >= (p.threshold||999)*0.6 && ds < (p.threshold||999);
+  });
+  const strong = flatPages.filter(p => (domainPcts[p.domainId]||0) < 20);
+
+  // Header
+  document.getElementById('rptStudent').textContent = [
+    state.name||'学生', g.label, state.role+'填写'
+  ].filter(Boolean).join(' · ');
+  document.getElementById('rptScore').textContent = totalScore;
+  document.getElementById('rptBadge').textContent = level.label;
+  document.getElementById('rptBadge').style.background = level.cls;
+  document.getElementById('rptBadge').style.color = level.color;
+  document.getElementById('rptMeta').innerHTML = `<span>满分${maxPossible}</span><span>${flatPages.length}个域</span><span>超标${overThresh.length}个</span>`;
+
+  let summary;
+  if (overThresh.length === 0 && nearThresh.length === 0) {
+    summary = '所有方面都在正常范围内。继续保持。';
+  } else if (overThresh.length === 0) {
+    summary = `${nearThresh.length}个方面接近关注线：${nearThresh.map(d=>d.domainName).join('、')}。`;
+  } else if (overThresh.length <= 2) {
+    summary = `${overThresh.map(d=>d.domainName).join('、')}需要关注，其余良好。`;
+  } else {
+    summary = `${overThresh.length}个方面明显困难。建议专业评估。`;
+  }
+  document.getElementById('rptSummary').textContent = summary;
+
+  // Strengths/Weaknesses
+  let swHTML = '';
+  const sc = strong.slice(0,4);
+  swHTML += `<div class="sw-col sw-good"><h4>✅ 相对优势</h4>${sc.length?sc.map(d=>`<div class="item">${d.domainName} ${domainScores[d.domainId]}/${d.max}</div>`).join(''):'<div class="item">所有域均有得分</div>'}</div>`;
+  const wc = overThresh.concat(nearThresh).slice(0,4);
+  swHTML += `<div class="sw-col sw-bad"><h4>⚠️ 需要关注</h4>${wc.length?wc.map(d=>`<div class="item">${d.domainName} ${domainScores[d.domainId]}/${d.max}</div>`).join(''):'<div class="item">无</div>'}</div>`;
+  document.getElementById('rptSW').innerHTML = swHTML;
+
+  // Radar
+  drawRadar(flatPages, domainPcts);
+
+  // Domain bars
+  let dbHTML = '';
+  flatPages.forEach(p => {
+    const ds = domainScores[p.domainId]||0, pct = domainPcts[p.domainId]||0;
+    const over = ds >= (p.threshold||999);
+    const cls = pct < 30 ? 'low' : (pct < 55 ? 'mid' : 'high');
+    dbHTML += `<div class="domain-bar">
+      <div class="db-header"><span class="db-name">${p.domainId} ${p.domainName}</span><span class="db-score">${ds}/${p.max} (${pct}%) ${over?'⚠️':''}</span></div>
+      <div class="db-track"><div class="db-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
+    </div>`;
+  });
+  document.getElementById('rptDomains').innerHTML = dbHTML;
+
+  // Alerts
+  let altHTML = '';
+  if (overThresh.length === 0) {
+    altHTML += '<div class="alert alert-g">✅ 所有领域得分均在阈值以下。继续监测。</div>';
+  }
+  overThresh.forEach(p => {
+    altHTML += `<div class="alert alert-r"><strong>${p.domainName}超标</strong>（${domainScores[p.domainId]}/${p.max}，阈值${p.threshold}）。该领域需纳入干预计划。</div>`;
+  });
+
+  // Special rule: processing + emotion → dyscalculia risk
+  const d8score = domainScores['D8']||0, d9score = domainScores['D9']||0, d1score = domainScores['D1']||0;
+  if (d8score >= 10 && d1score >= 12) altHTML += '<div class="alert alert-o"><strong>信息加工+数感双高</strong>：提示发育性计算障碍可能，建议转介教育心理评估。</div>';
+  if (d9score >= 14) altHTML += '<div class="alert alert-r"><strong>情感域严重超标</strong>：无论其他域得分如何，必须优先处理焦虑。暂停计时练习，重建安全感。</div>';
+  if (d9score >= 14 && d8score >= 10) altHTML += '<div class="alert alert-r"><strong>情感+加工双高危</strong>：建议转介心理健康+神经心理双评估。</div>';
+
+  document.getElementById('rptAlerts').innerHTML = altHTML;
+
+  // Actions
+  let actHTML = '<div style="font-size:14px;font-weight:600;margin-bottom:8px;color:var(--suc)">📅 本周就做</div>';
+  actHTML += '<div class="act-row"><input type="checkbox" id="a1"><label for="a1">和数学老师约一次15分钟沟通，带上报告截图，重点讨论超标领域。</label></div>';
+  if (overThresh.length > 0) {
+    actHTML += `<div class="act-row"><input type="checkbox" id="a2"><label for="a2">暂停所有计时数学练习。未来2周以"做对"而非"快"为目标。使用可擦写白板。</label></div>`;
+  }
+  if (d9score >= 10) {
+    actHTML += '<div class="act-row"><input type="checkbox" id="a3"><label for="a3">创造一次成功的数学体验——从孩子最能胜任的题开始，明确归因于策略（"你想出了好办法"）。</label></div>';
+  }
+  actHTML += '<div style="font-size:14px;font-weight:600;margin:12px 0 8px;color:var(--war)">📆 本月内</div>';
+  if (totalScore > (cfg.levels[1]?.max||30)) {
+    actHTML += '<div class="act-row"><input type="checkbox" id="a4"><label for="a4">启动结构化干预：每周3次×20分钟，从得分最高的域开始，每次只聚焦1个域。</label></div>';
+  }
+  actHTML += `<div class="act-row"><input type="checkbox" id="a5"><label for="a5">一个月后复评，对比两次得分变化。</label></div>`;
+  if (overThresh.length >= 3) {
+    actHTML += '<div style="font-size:14px;font-weight:600;margin:12px 0 8px;color:var(--dan)">⚠️ 如果需要</div>';
+    actHTML += '<div class="act-row"><input type="checkbox" id="a6"><label for="a6">转介教育心理或神经心理评估——多个领域超标提示可能存在神经基础。</label></div>';
+  }
+  document.getElementById('rptActions').innerHTML = actHTML;
+
+  // Teacher message
+  const highNames = overThresh.map(d=>d.domainName).join('、');
+  document.getElementById('rptMsg').innerHTML = `
+    <div class="msg-box">
+      <strong>教师-家长沟通话术（可复制）</strong>
+      <blockquote>${state.name||'同学'}家长您好。最近通过一份学习困难筛查量表对${state.name||'孩子'}的数学学习做了系统观察。结果显示在${overThresh.length>0?highNames+'方面需要额外支持':'各方面都在正常发展范围内'}。${overThresh.length>0?'这并不意味着孩子不努力——数学学习困难有明确的神经认知基础，很多孩子在正确支持下都能显著进步。':''}如果需要，我们可以约时间详细讨论。</blockquote>
+    </div>`;
+}
+
+// ==================== RADAR ====================
+function drawRadar(pages, pcts) {
+  const canvas = document.getElementById('radarCanvas');
+  const ctx = canvas.getContext('2d');
+  const W=300,H=300,cx=150,cy=150,r=120,n=pages.length;
+  ctx.clearRect(0,0,W,H);
+  if (n===0) return;
+
+  // Grid
+  [.25,.5,.75,1].forEach(ratio => {
+    ctx.beginPath();
+    for(let i=0;i<n;i++){
+      const ang = -Math.PI/2 + i*2*Math.PI/n;
+      const x=cx+r*ratio*Math.cos(ang), y=cy+r*ratio*Math.sin(ang);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle='#E0E0E0';ctx.lineWidth=1;ctx.stroke();
+  });
+
+  // Axes
+  for(let i=0;i<n;i++){
+    const ang = -Math.PI/2 + i*2*Math.PI/n;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(ang),cy+r*Math.sin(ang));
+    ctx.strokeStyle='#E0E0E0';ctx.stroke();
+    // Label
+    const lx=cx+(r+18)*Math.cos(ang), ly=cy+(r+18)*Math.sin(ang);
+    ctx.fillStyle='#666';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    const name = pages[i].domainName;
+    ctx.fillText(name.length>4?name.slice(0,4)+'…':name,lx,ly);
+  }
+
+  // Data
+  ctx.beginPath();
+  for(let i=0;i<n;i++){
+    const ang = -Math.PI/2 + i*2*Math.PI/n;
+    const v = Math.min((pcts[pages[i].domainId]||0)/100, 1);
+    const x=cx+r*v*Math.cos(ang), y=cy+r*v*Math.sin(ang);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle='rgba(92,107,192,.2)';ctx.fill();
+  ctx.strokeStyle='#5C6BC0';ctx.lineWidth=2;ctx.stroke();
+
+  // Points
+  for(let i=0;i<n;i++){
+    const ang = -Math.PI/2 + i*2*Math.PI/n;
+    const v = Math.min((pcts[pages[i].domainId]||0)/100, 1);
+    const x=cx+r*v*Math.cos(ang), y=cy+r*v*Math.sin(ang);
+    ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);
+    ctx.fillStyle=v>.5?'#EF5350':'#5C6BC0';ctx.fill();
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function restart() {
+  document.getElementById('page-report').classList.remove('active');
+  document.getElementById('page-welcome').classList.add('active');
+  localStorage.removeItem(STORE);
+  state = {grade:'',role:'',name:'',currentPage:0,answers:{}};
+  flatPages = [];
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('studentName').value = '';
+  document.querySelectorAll('.grade-btn,.role-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('resumeBanner').style.display = 'none';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

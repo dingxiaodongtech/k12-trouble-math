@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小红书配图版 · 数学学习困难知识树</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+}
+.card {
+  width: 900px;
+  height: 1200px;
+  border-radius: 24px;
+  padding: 56px 60px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+.card-number {
+  position: absolute;
+  top: 32px;
+  right: 40px;
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+.tag {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+.title {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+.subtitle {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 40px;
+  opacity: 0.85;
+}
+.content-block {
+  background: rgba(255,255,255,0.55);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(8px);
+}
+.content-block h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.content-block p, .content-block li {
+  font-size: 21px;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+.content-block ul {
+  padding-left: 24px;
+}
+.content-block li {
+  margin-bottom: 8px;
+}
+.highlight-box {
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+.highlight-box .label {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.highlight-box .text {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.two-col {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.two-col .col {
+  flex: 1;
+  background: rgba(255,255,255,0.55);
+  border-radius: 20px;
+  padding: 24px;
+}
+.col h4 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.col p, .col li {
+  font-size: 19px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+.col ul { padding-left: 20px; }
+.footer {
+  margin-top: auto;
+  font-size: 18px;
+  opacity: 0.6;
+  text-align: center;
+  padding-top: 20px;
+}
+.big-number {
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.medium-text {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.small-text {
+  font-size: 20px;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+.arrow-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.arrow-item {
+  background: rgba(255,255,255,0.6);
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+.arrow-sep {
+  font-size: 24px;
+  font-weight: 800;
+  opacity: 0.5;
+}
+.quote {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.6;
+  padding: 24px 28px;
+  border-left: 5px solid;
+  border-radius: 0 16px 16px 0;
+  background: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.grid-item {
+  background: rgba(255,255,255,0.55);
+  border-radius: 16px;
+  padding: 20px;
+}
+.grid-item .num {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.grid-item .desc {
+  font-size: 18px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Card 1 - Cover */
+.card-1 {
+  background: linear-gradient(135deg, #FFF5F0 0%, #FFE8E0 100%);
+  color: #5C3A2E;
+}
+.card-1 .tag { background: #FF8A65; color: white; }
+.card-1 .title { color: #3E2723; }
+
+/* Card 2 - 7D Framework */
+.card-2 {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  color: #1A237E;
+}
+.card-2 .tag { background: #5C6BC0; color: white; }
+.card-2 .title { color: #0D47A1; }
+.card-2 .content-block { background: rgba(255,255,255,0.6); }
+
+/* Card 3 - Cognitive Style */
+.card-3 {
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  color: #1B5E20;
+}
+.card-3 .tag { background: #66BB6A; color: white; }
+.card-3 .title { color: #0D3B10; }
+.card-3 .col { background: rgba(255,255,255,0.6); }
+
+/* Card 4 - Anxiety + Hubs */
+.card-4 {
+  background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+  color: #4A148C;
+}
+.card-4 .tag { background: #AB47BC; color: white; }
+.card-4 .title { color: #311B92; }
+.card-4 .quote { border-color: #AB47BC; }
+
+/* Card 5 - Error Patterns */
+.card-5 {
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+  color: #5D4037;
+}
+.card-5 .tag { background: #FF9800; color: white; }
+.card-5 .title { color: #3E2723; }
+.card-5 .grid-item { background: rgba(255,255,255,0.6); }
+
+/* Card 6 - ARROW */
+.card-6 {
+  background: linear-gradient(135deg, #FFFDE7 0%, #FFF9C4 100%);
+  color: #5D4037;
+}
+.card-6 .tag { background: #FBC02D; color: white; }
+.card-6 .title { color: #3E2723; }
+.card-6 .content-block { background: rgba(255,255,255,0.6); }
+
+@media print {
+  body { background: white; }
+  .card { box-shadow: none; page-break-after: always; }
+}
+</style>
+</head>
+<body>
+
+<!-- Card 1: Cover -->
+<div class="card card-1">
+  <div class="card-number">01 / 06</div>
+  <div class="tag">学习笔记</div>
+  <div class="title">数学学习困难<br>知识树</div>
+  <div class="subtitle">Steve Chinn《The Trouble with Maths》<br>七维诊断框架 · 精准定位 · 靶向干预</div>
+
+  <div class="content-block">
+    <h3>📚 核心来源</h3>
+    <p style="margin-bottom:10px"><strong>书籍：</strong>《The Trouble with Maths》第4版 (2021)<br>作者 Steve Chinn，英国数学学习困难领域权威</p>
+    <p><strong>网页：</strong>mathsexplained.co.uk · Dyscalculia.org</p>
+  </div>
+
+  <div class="highlight-box" style="background:rgba(255,138,101,0.15);">
+    <div class="label" style="color:#BF360C;">核心主张</div>
+    <div class="text" style="color:#3E2723;">传统教学回答"正常路径怎么走"，<br>这套体系回答"学生在哪里卡住、为什么卡住、怎么拉出来"。</div>
+  </div>
+
+  <div class="footer">用认知科学的透镜，重新理解"数学学不好"</div>
+</div>
+
+<!-- Card 2: 7D Framework -->
+<div class="card card-2">
+  <div class="card-number">02 / 06</div>
+  <div class="tag">诊断框架</div>
+  <div class="title">七维诊断矩阵<br>给困难"拍CT"</div>
+  <div class="subtitle">不是贴标签，而是像素级定位问题根源</div>
+
+  <div class="content-block">
+    <h3><span style="font-size:32px;">7</span> 个诊断维度</h3>
+    <ul>
+      <li><strong>❶ 困难域</strong> — 卡在哪个数学领域？6大域 + 14类错误模式</li>
+      <li><strong>❷ 认知因素</strong> — 大脑哪个环节出问题？记忆/速度/语言/视觉/执行/注意/方向</li>
+      <li><strong>❸ 情感因素</strong> — 焦虑？消极归因？习得性无助？</li>
+      <li><strong>❹ 认知风格</strong> — Inchworm 步步为营 vs Grasshopper 灵活跳跃</li>
+      <li><strong>❺ 严重度</strong> — 花园式 → 显著困难 → 特定学习困难 → 计算障碍</li>
+      <li><strong>❻ 发展阶段</strong> — 5个阶段 × 4大枢纽断裂点</li>
+      <li><strong>❼ 干预策略</strong> — ARROW模型 + 7大策略族</li>
+    </ul>
+  </div>
+
+  <div class="quote" style="border-color:#5C6BC0;">
+    "一个学生的完整困难画像 = 困难域 × 认知因素 × 情感因素 × 认知风格 × 严重度 × 发展阶段 × 干预策略"
+  </div>
+
+  <div class="footer">精准诊断，是有效干预的前提</div>
+</div>
+
+<!-- Card 3: Cognitive Style -->
+<div class="card card-3">
+  <div class="card-number">03 / 06</div>
+  <div class="tag">认知风格</div>
+  <div class="title">两种数学大脑</div>
+  <div class="subtitle">极端化才是问题，不是哪种更好</div>
+
+  <div class="two-col">
+    <div class="col">
+      <h4>🐛 Inchworm<br>尺蠖型</h4>
+      <ul>
+        <li>聚焦局部，先找数字和符号</li>
+        <li>套用公式，按步骤前进</li>
+        <li>纸笔记录每一步</li>
+        <li>很少检查答案</li>
+        <li>机械操作，缺乏数值理解</li>
+      </ul>
+      <p style="margin-top:12px;color:#B71C1C;font-weight:700;">风险：步骤全对结果错，遇到非标题崩溃</p>
+    </div>
+    <div class="col">
+      <h4>🦗 Grasshopper<br>蚱蜢型</h4>
+      <ul>
+        <li>全局概览，先估算答案</li>
+        <li>灵活拆分重组数字</li>
+        <li>心算为主，很少记录</li>
+        <li>主动评估合理性</li>
+        <li>深刻理解数字关系</li>
+      </ul>
+      <p style="margin-top:12px;color:#B71C1C;font-weight:700;">风险：答案对但无过程，考试被扣分</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="background:rgba(102,187,106,0.15);">
+    <div class="label" style="color:#1B5E20;">诊断案例</div>
+    <div class="text" style="color:#0D3B10;">600 − 594 = ?<br>Inchworm 列竖式算30秒；Grasshopper 一眼看出差6。<br>口算场景下，极端 Inchworm 容易崩溃。</div>
+  </div>
+
+  <div class="footer">教学应适配风格，而非强迫统一</div>
+</div>
+
+<!-- Card 4: Anxiety + Hubs -->
+<div class="card card-4">
+  <div class="card-number">04 / 06</div>
+  <div class="tag">焦虑与断裂</div>
+  <div class="title">数学焦虑<br>是"生理疼痛"</div>
+  <div class="subtitle">fMRI证据 + 四大枢纽断裂点</div>
+
+  <div class="content-block">
+    <h3>🔬 神经科学证据</h3>
+    <p>Lyons & Beilock (2012) fMRI 研究发现：<strong>高数学焦虑者在"预期要做数学题"时，大脑激活区域与身体疼痛恐惧高度重叠。</strong></p>
+    <p style="margin-top:10px">→ "多练就好了"可能适得其反，等同于反复触发疼痛预期</p>
+  </div>
+
+  <div class="highlight-box" style="background:rgba(171,71,188,0.12);">
+    <div class="label" style="color:#4A148C;">恶性循环</div>
+    <div class="text" style="color:#311B92;">焦虑占用工作记忆 → 运算出错 → 消极反馈 → "是我的问题" → 更多焦虑</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎯 四大枢纽断裂点</h3>
+    <div class="arrow-chain">
+      <div class="arrow-item" style="background:rgba(171,71,188,0.15);">① 20以内进退位</div>
+      <div class="arrow-sep">→</div>
+      <div class="arrow-item" style="background:rgba(171,71,188,0.15);">② 表内乘除法</div>
+      <div class="arrow-sep">→</div>
+      <div class="arrow-item" style="background:rgba(171,71,188,0.15);">③ 有余数除法</div>
+      <div class="arrow-sep">→</div>
+      <div class="arrow-item" style="background:rgba(171,71,188,0.15);">④ 小数的意义</div>
+    </div>
+    <p style="text-align:center;font-size:19px;">像多米诺骨牌，前面倒了后面全崩。<br><strong>7岁是放弃数学的众数年龄。</strong></p>
+  </div>
+
+  <div class="footer">先处理焦虑，再处理数学</div>
+</div>
+
+<!-- Card 5: Error Patterns -->
+<div class="card card-5">
+  <div class="card-number">05 / 06</div>
+  <div class="tag">错误模式</div>
+  <div class="title">常见错误<br>不是"粗心"</div>
+  <div class="subtitle">每一个错误背后，都有可追溯的根因</div>
+
+  <div class="grid-2x2">
+    <div class="grid-item">
+      <div class="num" style="color:#E65100;">E1</div>
+      <div class="desc"><strong>数位拼接</strong><br>45+8=413<br>根因：数位概念缺失</div>
+    </div>
+    <div class="grid-item">
+      <div class="num" style="color:#E65100;">E2</div>
+      <div class="desc"><strong>末位对齐泛化</strong><br>8.5−2.15=6.45<br>根因：整数规则错误迁移</div>
+    </div>
+    <div class="grid-item">
+      <div class="num" style="color:#E65100;">E3</div>
+      <div class="desc"><strong>分数规则泛化</strong><br>1/2+1/3=2/5<br>根因：整数加法规则错误泛化</div>
+    </div>
+    <div class="grid-item">
+      <div class="num" style="color:#E65100;">E8</div>
+      <div class="desc"><strong>语义偏差</strong><br>"比8多5"→8−5=3<br>根因："比"字日常语义干扰</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3>⚠️ 关键洞察</h3>
+    <p><strong>"粗心"可能是工作记忆过载、注意力弱或焦虑。</strong></p>
+    <p style="margin-top:8px">口算远差于笔算 → 工作记忆弱<br>卷面大面积留白 → 焦虑/恐惧负面评价<br>今天会明天忘 → 长期数学记忆薄弱</p>
+  </div>
+
+  <div class="highlight-box" style="background:rgba(255,152,0,0.12);">
+    <div class="label" style="color:#E65100;">数据锚定</div>
+    <div class="text" style="color:#3E2723;">异分母分数加法，15岁正确率仅 <strong>27.3%</strong><br>这不是"学生不努力"，是系统性困难。</div>
+  </div>
+
+  <div class="footer">追溯前置依赖，找到真正的断裂点</div>
+</div>
+
+<!-- Card 6: ARROW + Strategies -->
+<div class="card card-6">
+  <div class="card-number">06 / 06</div>
+  <div class="tag">干预策略</div>
+  <div class="title">ARROW模型<br>+ 立即可用的工具</div>
+  <div class="subtitle">A-R-R-O-W 五步干预法</div>
+
+  <div class="content-block">
+    <h3>🏹 ARROW 干预模型</h3>
+    <ul>
+      <li><strong>A</strong>cknowledge — 承认与诊断（精准识别困难）</li>
+      <li><strong>R</strong>esponsive Flexibility — 响应式灵活性（同一个概念备3种教法）</li>
+      <li><strong>R</strong>emedial + Developmental — 向前走的同时修补漏洞</li>
+      <li><strong>O</strong>ver-learning — 过度学习（少量多次 > 大量一次）</li>
+      <li><strong>W</strong>hat else are you teaching? — 反思：教会了信心还是恐惧？</li>
+    </ul>
+  </div>
+
+  <div class="content-block">
+    <h3>🛠️ 3个立即可用的策略</h3>
+    <p style="margin-bottom:10px"><strong>1️⃣ 工作记忆卸载</strong><br>口算崩溃 → 允许分步纸笔记录，逐步减少记录量</p>
+    <p style="margin-bottom:10px"><strong>2️⃣ 焦虑重塑</strong><br>卷面留白 → 换可擦写白板，不留永久错误痕迹，从简单题重建成功体验</p>
+    <p><strong>3️⃣ 理解优先于记忆</strong><br>乘法表忘 → 用"已知推未知"：6×9=6×10−6，给空白表自己构建</p>
+  </div>
+
+  <div class="highlight-box" style="background:rgba(251,192,45,0.2);">
+    <div class="label" style="color:#F57F17;">黄金法则</div>
+    <div class="text" style="color:#3E2723;">预防 > 干预 · 理解 > 速度 · 成功体验 > 难度挑战</div>
+  </div>
+
+  <div class="footer">让每一位"学不会"背后，都有可追溯的原因和可操作的方案</div>
+</div>
+
+</body>
+</html>
