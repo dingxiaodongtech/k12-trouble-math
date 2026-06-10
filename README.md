@@ -4,7 +4,7 @@
 
 ## 快速使用
 
-👉 **[打开诊断量表](https://dingxiaodongtech.github.io/k12-trouble-math/数学学习困难诊断量表.html)**
+👉 **[打开诊断量表](https://dingxiaodongtech.github.io/k12-trouble-math)**
 手机/电脑浏览器直接打开，无需下载安装。
 
 选年级 → 填身份 → 逐域答题（每屏5-8题）→ 自动生成报告（雷达图 + 各域分析 + 行动清单 + 沟通话术）。
@@ -19,7 +19,7 @@
 ## 资料清单
 
 ```
-数学学习困难诊断量表.html              ⭐ 6级分龄交互诊断工具
+index.html                              ⭐ 6级分龄交互诊断工具
 1-数学学习困难知识树（教研侧）.md       诊断维度/认知理论/错误模式/干预策略（131KB）
 1-数学学习困难知识树-使用手册.md        四角色使用指南（48KB）
 The-Trouble-with-Maths-深度阅读报告.md  全书10章逐章分析（28KB）
