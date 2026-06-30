@@ -40,7 +40,7 @@ export interface KnowledgePoint {
   id: string;
   name: string;
   description?: string;
-  cognitiveLevel: "记忆" | "理解" | "应用" | "分析" | "综合";
+  cognitiveLevel: "" | "记忆" | "理解" | "应用" | "分析" | "综合";
   importance: number;
   questionCount: number;
   /** 数据库中与本题匹配的标签名（用于前端筛选） */

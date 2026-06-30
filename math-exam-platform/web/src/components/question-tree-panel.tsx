@@ -526,8 +526,30 @@ export function QuestionTreePanel({
                     )}
 
                     {chapter.sections.length > 0 && (
-                      <Accordion className="ml-4 space-y-0">
-                        {chapter.sections.map((section) => (
+                      <div className="ml-4 space-y-0">
+                        {chapter.sections.map((section) => {
+                          const hasKPs = section.knowledgePoints.length > 0;
+
+                          // 无子级KP：平铺为叶子节点
+                          if (!hasKPs) {
+                            return (
+                              <label
+                                key={section.id}
+                                className={cn(
+                                  "flex items-center gap-2.5 px-2.5 py-2 rounded-md cursor-pointer ml-4",
+                                  "transition-all duration-150",
+                                  "hover:bg-muted/20"
+                                )}
+                              >
+                                <span className="text-[12px] text-foreground/50 font-normal truncate flex-1 text-left">
+                                  {section.name}
+                                </span>
+                              </label>
+                            );
+                          }
+
+                          // 有子级KP：可展开的Accordion
+                          return (
                           <AccordionItem
                             key={section.id}
                             value={section.id}
@@ -585,7 +607,7 @@ export function QuestionTreePanel({
                             </AccordionContent>
                           </AccordionItem>
                         ))}
-                      </Accordion>
+                      </div>
                     )}
                   </AccordionContent>
                 </AccordionItem>

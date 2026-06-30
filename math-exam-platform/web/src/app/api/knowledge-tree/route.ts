@@ -178,8 +178,11 @@ function loadTree(): StageNode[] {
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split(",");
     if (cols.length < 5) continue;
-    const [version, booklet, unit, section, kpName] = cols;
-    // 允许: 人教版 / 中考 / 竞赛
+    const version = (cols[0] || "").trim().replace(/\r/g, "");
+    const booklet = (cols[1] || "").trim().replace(/\r/g, "");
+    const unit = (cols[2] || "").trim().replace(/\r/g, "");
+    const section = (cols[3] || "").trim().replace(/\r/g, "");
+    const kpName = (cols[4] || "").trim().replace(/\r/g, "");
     if (!version.includes("人教版") && version !== "中考" && version !== "竞赛") continue;
 
     let stageName: string;
@@ -231,9 +234,9 @@ function loadTree(): StageNode[] {
       grade.chapters.push(chapter);
     }
 
-    // section为空时（中考/竞赛扁平结构）：用"知识点"充当小节名，专题作为子级KP
-    const secName = section || (kpName ? "知识点" : "");
-    const kpFinal = kpName || "";
+    // 中考/竞赛：无小节层级，专题名直接做section，不产生子KP
+    const secName = section || kpName;
+    const kpFinal = (section && kpName) ? kpName : "";
 
     const secId = safeId("sec", chId, secName);
     let sec = chapter.sections.find(s => s.id === secId);
@@ -258,7 +261,7 @@ function loadTree(): StageNode[] {
       sec.knowledgePoints.push({
         id: safeId("kp", secId, kpFinal),
         name: kpFinal,
-        description: "", cognitiveLevel: "理解", importance: 4,
+        description: "", cognitiveLevel: "", importance: 0,
         questionCount: qCount, dbTags: [...new Set(dbTags)].slice(0, 10),
       });
     }
@@ -269,9 +272,9 @@ function loadTree(): StageNode[] {
   for (const [, stage] of stageMap) {
     stage.grades.sort((a, b) => a.gradeLevel - b.gradeLevel || a.name.localeCompare(b.name));
     for (const grade of stage.grades) {
-      // 清理：移除没有KP的空section和空chapter
+      // 清理：只移除无名空section；有名section（含中考专题叶子）保留
       for (const ch of grade.chapters) {
-        ch.sections = ch.sections.filter(sec => sec.knowledgePoints.length > 0);
+        ch.sections = ch.sections.filter(sec => sec.name.trim() !== "");
         ch.sections.sort((a, b) => a.order - b.order);
       }
       // 清理：移除没有section的chapter

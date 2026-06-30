@@ -1,0 +1,298 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Noto Sans CJK SC", system-ui, -apple-system, sans-serif);
+  --font-mono: var(--font-geist-mono, "Cascadia Code", "Fira Code", "JetBrains Mono", "SF Mono", Consolas, monospace);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    background: linear-gradient(180deg, oklch(0.97 0.005 240) 0%, oklch(0.99 0.002 240) 30%, oklch(1 0 0) 100%);
+    background-attachment: fixed;
+    min-height: 100%;
+  }
+  html.dark {
+    background: linear-gradient(180deg, oklch(0.15 0.008 240) 0%, oklch(0.13 0.004 240) 50%, oklch(0.145 0 0) 100%);
+    background-attachment: fixed;
+  }
+  body {
+    @apply text-foreground;
+    background: transparent;
+  }
+}
+
+/* ── 晓冬 · 冬季主题 ── */
+@utility bg-winter-gradient {
+  background: linear-gradient(
+    180deg,
+    oklch(0.97 0.005 240) 0%,
+    oklch(0.99 0.002 240) 30%,
+    oklch(1 0 0) 100%
+  );
+}
+
+.dark .bg-winter-gradient {
+  background: linear-gradient(
+    180deg,
+    oklch(0.15 0.008 240) 0%,
+    oklch(0.13 0.004 240) 50%,
+    oklch(0.145 0 0) 100%
+  );
+}
+
+@utility text-winter-cool {
+  background: linear-gradient(135deg, oklch(0.55 0.12 240), oklch(0.5 0.08 260));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 雪花飘落动画 (装饰用) */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(110vh) translateX(40px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.snowflake-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -10;
+  overflow: hidden;
+}
+
+.snowflake-particle {
+  position: absolute;
+  top: -20px;
+  color: oklch(0.6 0.06 240 / 0.15);
+  animation: snowfall linear infinite;
+}
+
+.dark .snowflake-particle {
+  color: oklch(0.7 0.04 240 / 0.12);
+}
+
+/* 冰霜卡片效果 */
+.card-frost {
+  backdrop-filter: blur(12px);
+  background: oklch(1 0 0 / 0.6);
+  border: 1px solid oklch(0.9 0.01 240 / 0.4);
+}
+
+.dark .card-frost {
+  background: oklch(0.2 0.005 240 / 0.5);
+  border: 1px solid oklch(0.3 0.01 240 / 0.3);
+}
+
+/* ── KaTeX 指数/下标中的分数缩小（\dfrac 在上下标中不应全尺寸）── */
+.katex .mord .msupsub .mfrac .frac-line { border-bottom-width: 0.04em !important; }
+.katex .msupsub .mfrac { font-size: 0.75em !important; }
+
+/* ── 填空占位符 ── */
+.blank-box {
+  display: inline-block;
+  min-width: 44px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-bottom: 2px solid oklch(0.6 0.15 240);
+  color: oklch(0.6 0.15 240);
+  font-size: 11px;
+  font-weight: 700;
+  margin: 0 3px;
+  padding: 0 5px;
+  vertical-align: middle;
+}
+
+/* ── Markdown 表格 ── */
+.md-table {
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 13px;
+  width: 100%;
+}
+.md-table th, .md-table td {
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  text-align: left;
+}
+.md-table th {
+  background: var(--muted);
+  font-weight: 600;
+  color: var(--foreground);
+}
+.md-table tr:nth-child(even) td {
+  background: var(--muted) / 0.3;
+}
+
+/* ── MathRenderer 图片样式 ── */
+.math-content img {
+  max-width: min(100%, 300px);
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  object-fit: contain;
+}
+.math-content p img,
+.math-content br + img {
+  display: block;
+  max-width: 100%;
+  max-height: none;
+}
+/* 选项容器内的图片 */
+.option-content img,
+[class*="option_"] img {
+  max-height: 200px;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.math-content img:hover {
+  border-color: oklch(0.6 0.15 240);
+}
+
+/* ── 题目文本中的中文括号/填空留白 ── */
+.stem-text {
+  /* 改善括号内空白视觉效果 */
+  letter-spacing: 0.01em;
+  line-height: 1.8;
+}
+/* 中文括号前后的自然间距 */
+.stem-text span:has(> .katex) {
+  /* LaTeX公式保持正常间距 */
+  letter-spacing: normal;
+}
